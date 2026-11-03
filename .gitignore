@@ -1,0 +1,15 @@
+# Entornos virtuales
+venv/
+venv_prueba/
+.venv/
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Configuración local de VS Code
+.vscode/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
