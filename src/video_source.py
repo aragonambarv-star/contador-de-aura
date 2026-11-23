@@ -3,7 +3,7 @@ import cv2
 from src.config import CAMARA_ID, ANCHO_CAMARA, ALTO_CAMARA
 
 
-class VideoSource:
+class fuentevideo:
     """Gestiona la captura de imágenes de la cámara."""
 
     def __init__(self):

@@ -1,13 +1,13 @@
 import cv2
 import time
 
-from src.video_source import VideoSource
-from src.pose_detector import PoseDetector
+from src.video_source import fuentevideo
+from src.pose_detector import detectarpose
 
 
 def main():
-    video = VideoSource()
-    detector = PoseDetector()
+    video = fuentevideo()
+    detector = detectarpose()
 
     if not video.abrir_camara():
         print("No se pudo abrir la cámara.")
@@ -50,15 +50,15 @@ def main():
                         )
 
                     # Obtener la posición de la muñeca
-                    muneca = mano[0]
+                    muñeca = mano[0]
 
-                    x_muneca = int(muneca.x * frame.shape[1])
-                    y_muneca = int(muneca.y * frame.shape[0])
+                    x_muñeca = int(muñeca.x * frame.shape[1])
+                    y_muñeca = int(muñeca.y * frame.shape[0])
 
                     # Destacar la muñeca en rojo
                     cv2.circle(
                         frame,
-                        (x_muneca, y_muneca),
+                        (x_muñeca, y_muñeca),
                         12,
                         (0, 0, 255),
                         -1
@@ -67,7 +67,7 @@ def main():
                     # Mostrar la posición vertical
                     cv2.putText(
                         frame,
-                        f"Mano {numero + 1}: Y={muneca.y:.2f}",
+                        f"Mano {numero + 1}: Y={muñeca.y:.2f}",
                         (10, 65 + numero * 35),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         0.7,

@@ -1,8 +1,9 @@
+
 import cv2
 
-from src.video_source import VideoSource
-from src.motion_detector import MotionDetector
-from src.config import UMBRAL_MOVIMIENTO
+from src.video_source import fuentevideo
+from src.motion_detector import detector_de_movimiento
+from src.config import UMBRAL_MOVIMIENTO, PUNTOS_POR_MOVIMIENTO
 
 
 def main():
@@ -10,8 +11,8 @@ def main():
     print("       CONTADOR DE AURA")
     print("==============================")
 
-    video = VideoSource()
-    detector = MotionDetector(UMBRAL_MOVIMIENTO)
+    video = fuentevideo()
+    detector = detector_de_movimiento(UMBRAL_MOVIMIENTO)
 
     if not video.abrir_camara():
         print("Revisá que la cámara esté conectada y disponible.")
@@ -29,17 +30,19 @@ def main():
 
             cantidad_movimiento, frame = detector.detectar(frame)
 
+            puntos = detector.puntos * PUNTOS_POR_MOVIMIENTO
+
             cv2.putText(
                 frame,
-                f"Movimiento: {cantidad_movimiento}",
-                (10, 30),
+                f"AURA: {puntos}",
+                (10, 50),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                0.7,
-                (0, 255, 0),
+                1,
+                (0, 255, 255),
                 2
             )
 
-            cv2.imshow("Contador de Aura - Prueba de movimiento", frame)
+            cv2.imshow("CONTADOR DE AURA", frame)
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break

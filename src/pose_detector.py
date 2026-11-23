@@ -3,7 +3,7 @@ import mediapipe as mp
 from pathlib import Path
 
 
-class PoseDetector:
+class detectarpose:
     def __init__(self):
         ruta_modelo = (
             Path(__file__).resolve().parent.parent
