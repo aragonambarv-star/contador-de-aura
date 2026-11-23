@@ -30,7 +30,9 @@ class fuentevideo:
         if self.camara is None:
             return False, None
 
-        return self.camara.read()
+        lectura_correcta, frame = self.camara.read()
+        frame = cv2.flip(frame, 1)
+        return lectura_correcta, frame
 
     def cerrar_camara(self):
         """Libera la cámara cuando terminamos."""
