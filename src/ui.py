@@ -10,6 +10,8 @@ from PIL import Image, ImageTk, ImageOps
 from src.video_source import fuentevideo
 from src.motion_detector import detector_de_movimiento
 from src.config import UMBRAL_MOVIMIENTO, PUNTOS_POR_MOVIMIENTO
+from src.audio_manager import iniciar_musica, detener_musica
+import pygame
 NEGRO = '#FFF9EB'
 PANEL = '#F7CCD3'
 PANEL_CLARO = '#E8A4B5'
@@ -176,6 +178,7 @@ class ContadorAura:
         self.detector_rostros = cv2.CascadeClassifier(
             cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
         )
+        iniciar_musica()
         self.pantalla_inicio()
 
     def texto(self, padre, contenido, color=BLANCO, tam=12, fondo=None):
@@ -289,7 +292,7 @@ class ContadorAura:
             width=entry_w, height=entry_h
         )
         placeholder = 'ESCRIBI TU NOMBRE...'
-        self.nombre.insert(0, placeholder)
+        self.nombre.insert(1, placeholder)
 
         def quitar_placeholder(event=None):
             if self.nombre.get() == placeholder:
@@ -389,6 +392,7 @@ class ContadorAura:
         self.resultados(lista)
 
     def iniciar(self):
+        
         self.jugador = self.nombre.get().strip()[:22]
         if self.jugador == 'ESCRIBI TU NOMBRE...':
             self.jugador = ''
@@ -411,11 +415,16 @@ class ContadorAura:
                 self.video = None
             messagebox.showerror('Error al iniciar', str(error))
             return
+        print("INTENTANDO INICIAR MUSICA")
+        iniciar_musica()
+        print("ESTADO DEL AUDIO:", pygame.mixer.music.get_busy())
         self.puntos = 0
         self.estado = 'cuenta'
         self.inicio_cuenta = time.monotonic()
         self.mensaje_inicio_hasta = 0
         self.limpiar()
+
+  
 
         # Fondo crema de la paleta; distribución aireada y equilibrada.
         panel = tk.Frame(self.root, bg='#FFF9EB')
@@ -674,6 +683,7 @@ class ContadorAura:
         if error:
             messagebox.showerror('Cámara', 'Se perdió la conexión con la cámara.')
         self.resultados(self.ranking())
+        detener_musica()
 
     def resultados(self, lista):
         self.estado = 'final'
@@ -822,7 +832,7 @@ class ContadorAura:
             boton.bind('<Button-1>', lambda e: accion())
 
         boton_pixel('VOLVER AL INICIO', 650, '#E8A4B5', self.pantalla_inicio)
-        boton_pixel('JUGAR DE NUEVO', 725, '#B5C56D', self.pantalla_inicio)
+        boton_pixel('JUGAR DE NUEVO', 725, '#B5C56D', self.juego_nuevo)
 
     def cerrar(self):
         if self.fondo_after_id is not None:
